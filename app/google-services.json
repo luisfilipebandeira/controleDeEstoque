@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "864467673852",
+    "project_id": "controle-de-estoque-8e1e8",
+    "storage_bucket": "controle-de-estoque-8e1e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864467673852:android:90d1abcab2e203b110ad79",
+        "android_client_info": {
+          "package_name": "com.example.play"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864467673852-gas14hgv74cpqtadcnsj6i8cr0gd4di3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfT78onbvAC3jmNpQM64Xy5WmxXOuBEcA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864467673852-gas14hgv74cpqtadcnsj6i8cr0gd4di3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
