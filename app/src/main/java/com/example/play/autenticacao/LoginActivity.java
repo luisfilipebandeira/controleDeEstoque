@@ -17,6 +17,7 @@ import com.example.play.helper.FirebaseHelper;
 public class LoginActivity extends AppCompatActivity {
 
     private TextView text_criar_conta;
+    private TextView text_recuperar_conta;
     private EditText edit_email;
     private EditText edit_senha;
     private ProgressBar progress_bar;
@@ -69,12 +70,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void configCliques() {
         text_criar_conta.setOnClickListener(view -> startActivity(new Intent(this, CriarContaActivity.class)));
+        text_recuperar_conta.setOnClickListener(view -> startActivity(new Intent(this, RecuperarContaActivity.class)));
     }
 
     private void iniciaComponentes() {
         edit_email = findViewById(R.id.edit_email);
         edit_senha = findViewById(R.id.edit_senha);
         text_criar_conta = findViewById(R.id.text_criar_conta);
+        text_recuperar_conta = findViewById(R.id.text_recuperar_conta);
         progress_bar = findViewById(R.id.progressBar);
     }
 }

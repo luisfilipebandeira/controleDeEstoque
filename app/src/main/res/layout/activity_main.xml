@@ -14,28 +14,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/text_info"
-        android:visibility="gone"
-        tools:visibility="visible"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nenhum Produto"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/rvProdutos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:indeterminateTint="@color/white" />
+
+        <TextView
+            android:id="@+id/text_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Carregando produtos..."
+            android:textColor="@android:color/white"
+            tools:visibility="visible" />
+    </LinearLayout>
 
 
-        <com.tsuryo.swipeablerv.SwipeableRecyclerView
+    <com.tsuryo.swipeablerv.SwipeableRecyclerView
         android:id="@+id/rvProdutos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintVertical_bias="1.0"
         app:leftBgColor="@android:color/white"
         app:leftImage="@drawable/ic_baseline_delete_24"
         app:rightBgColor="@android:color/black"

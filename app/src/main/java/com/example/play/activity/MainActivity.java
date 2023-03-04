@@ -1,5 +1,6 @@
 package com.example.play.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,12 +17,16 @@ import com.example.play.adapter.AdapterProduto;
 import com.example.play.autenticacao.LoginActivity;
 import com.example.play.helper.FirebaseHelper;
 import com.example.play.model.Produto;
-import com.example.play.ProdutoDAO;
 import com.example.play.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterProduto.OnClick {
@@ -32,21 +38,14 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
     private ImageButton ibAdd;
     private ImageButton ibVerMais;
     private TextView text_info;
-
-    private ProdutoDAO produtoDAO;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        produtoDAO = new ProdutoDAO(this);
-        produtoList = produtoDAO.getListProdutos();
-
-        ibAdd = findViewById(R.id.ib_add);
-        ibVerMais = findViewById(R.id.ib_ver_mais);
-        rvProdutos = findViewById(R.id.rvProdutos);
-        text_info = findViewById(R.id.text_info);
+        iniciaComponentes();
 
         ouvinteCliques();
         configRecyclerView();
@@ -56,7 +55,41 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
     protected void onStart() {
         super.onStart();
 
-        configRecyclerView();
+        recuperaProdutos();
+    }
+
+    private void iniciaComponentes() {
+        ibAdd = findViewById(R.id.ib_add);
+        ibVerMais = findViewById(R.id.ib_ver_mais);
+        rvProdutos = findViewById(R.id.rvProdutos);
+        text_info = findViewById(R.id.text_info);
+        progressBar = findViewById(R.id.progressBar);
+    }
+
+    private void recuperaProdutos() {
+        DatabaseReference produtosRef = FirebaseHelper.getDatabaseReference()
+                .child("produtos")
+                .child(FirebaseHelper.getIdFirebase());
+        produtosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                produtoList.clear();
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Produto produto = snap.getValue(Produto.class);
+
+                    produtoList.add(produto);
+                }
+
+                verificaQtdLista();
+                Collections.reverse(produtoList);
+                adapterProduto.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void ouvinteCliques(){
@@ -83,10 +116,6 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
     }
 
     private void configRecyclerView(){
-        produtoList.clear();
-        produtoList = produtoDAO.getListProdutos();
-        verificaQtdLista();
-
         rvProdutos.setLayoutManager(new LinearLayoutManager(this));
         rvProdutos.setHasFixedSize(true);
         adapterProduto = new AdapterProduto(produtoList, this);
@@ -102,8 +131,9 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
             public void onSwipedRight(int position) {
                 Produto produto = produtoList.get(position);
 
-                produtoDAO.deletaProduto(produto);
+
                 produtoList.remove(produto);
+                produto.deletarProduto();
                 adapterProduto.notifyItemRemoved(position);
 
                 verificaQtdLista();
@@ -113,10 +143,12 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
 
     private void verificaQtdLista() {
         if (produtoList.size() == 0) {
+            text_info.setText("Nenhum produto cadastrado");
             text_info.setVisibility(View.VISIBLE);
         } else {
             text_info.setVisibility(View.GONE);
         }
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
