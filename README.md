@@ -9,9 +9,9 @@
 
 <p>Telas do App</p>
 <p align="center">
-    <img alt="Tela 1" src=".github/01.png" width="20%">
-    <img alt="Tela 1" src=".github/02.png" width="20%">
-    <img alt="Tela 1" src=".github/03.png" width="20%">
+    <img alt="Tela 1" src=".github/01.png" width="30%">
+    <img alt="Tela 1" src=".github/02.png" width="30%">
+    <img alt="Tela 1" src=".github/03.png" width="30%">
 </p>
 
 
